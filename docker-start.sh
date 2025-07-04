@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e # Exit on error
 
-echo "Started re-building Docker image."
+echo "Started building Docker image."
 docker compose build
-echo "Sucessfully re-built Docker image!"
+echo "Sucessfully built Docker image!"
 
 echo "Restarting the Discord bot."
 docker compose up -d
