@@ -1,1 +1,1 @@
-# Tribinator
+# Tribeinator
