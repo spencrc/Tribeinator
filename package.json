@@ -5,7 +5,8 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "node src/bot.js"
+    "start": "node dist/bot.js",
+    "deploy": "node dist/deploy-commands.js"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
