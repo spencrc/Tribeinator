@@ -10,7 +10,7 @@ RUN npm install
 
 # Copies the actual bot's code and compiles it.
 COPY . .
-RUN npm run compile
+RUN npm run build
 
 # Runs the bot!
-CMD ["node", "dist/bot.js"]
+CMD ["npm", "start"]

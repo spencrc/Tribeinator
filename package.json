@@ -5,8 +5,8 @@
   },
   "type": "module",
   "scripts": {
-    "compile": "npx tsc",
-    "start": "npm run compile && node dist/bot.js",
+    "build": "npx tsc",
+    "start": "node dist/bot.js",
 
     "dev": "npx tsx --watch-path=./src src/bot.ts",
 
