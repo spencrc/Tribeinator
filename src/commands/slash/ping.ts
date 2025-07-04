@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { SlashCommand } from '../slash-command.js';
+import type { SlashCommand } from "../commands.js";
 
 export default class implements SlashCommand {
 	public data = new SlashCommandBuilder()
