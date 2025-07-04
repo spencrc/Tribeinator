@@ -1,0 +1,5 @@
+# Folders that will get installed when building the Docker container.
+/dist
+/node_modules
+# Folders that always exist, but shouldn't be in our container.
+/.git
