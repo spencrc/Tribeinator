@@ -5,7 +5,7 @@ echo "Started building Docker image."
 docker compose build
 echo "Sucessfully built Docker image!"
 
-echo "Restarting the Discord bot."
+echo "Starting the Discord bot."
 docker compose up -d
 
 echo "Successfully updated bot!"
