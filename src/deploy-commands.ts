@@ -29,14 +29,14 @@ for (const folder of commandFolders) {
     }
 }
 
-const rest = new REST().setToken(DISCORD_TOKEN);
+const rest: REST = new REST().setToken(DISCORD_TOKEN);
 
 (async () => {
 	try {
 		console.log(`Started refreshing application (/) commands.`);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
+		await rest.put(
 			Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID),
 			{ body: commands },
 		);
