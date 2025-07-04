@@ -4,8 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits, MessageFlags } from "discord.js";
 import { DISCORD_TOKEN } from "./config.js";
 
-import type { SlashCommand } from './commands/slash-command.js';
-import type { MessageCommand } from './commands/message-command.js';
+import type { SlashCommand, MessageCommand } from './commands/commands.js';
 
 interface DiscordClient extends Client {
     commands: Collection<string, SlashCommand>
@@ -23,17 +22,17 @@ const client: DiscordClient = Object.assign(
 	}
 )
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const foldersPath = path.join(__dirname, "commands");
-const commandFolders = fs.readdirSync(foldersPath);
+const __filename: string = fileURLToPath(import.meta.url); //gets this file's name
+const __dirname: string = path.dirname(__filename); //gets this file's directory name
+const foldersPath: string = path.join(__dirname, "commands");
+const commandFolders: string[] = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
+    const commandsPath: string = path.join(foldersPath, folder);
 
-	if (!fs.statSync(commandsPath).isDirectory()) continue;
+	if (!fs.statSync(commandsPath).isDirectory()) continue; //ensures that commandsPath is really a directory, not a ".js" file
 
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    const commandFiles: string[] = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js')); //gets all files, and ensures they end with ".js"
 
     for (const file of commandFiles) {
         const filePath: string = path.join(commandsPath, file);
