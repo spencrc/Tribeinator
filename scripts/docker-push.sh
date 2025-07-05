@@ -5,12 +5,12 @@ username=$1
 repo_name=$2
 
 if [ $# -ne 2 ]; then
-    echo -e "Usage: $0 <username> <repo_name>\n"
-    echo -n -e "Description:\n\tThis script pushes a Docker image to Docker Hub. " 
-    echo -e "You are\n\trequired to be logged into Docker to use this script!\n"
-    echo -e "Arguments:\n\tusername\tYour Docker Hub username"
-    echo -e "\trepo_name\tThe name of the repository you wish to push to\n"
-    echo -e "Example:\n\t$0 spencrc tribeinator"
+    echo -e     "Usage: $0 <username> <repo_name>\n"
+    echo -n -e  "Description:\n\tThis script pushes a Docker image to Docker Hub. " 
+    echo -e     "You are\n\trequired to be logged into Docker to use this script!\n"
+    echo -e     "Arguments:\n\tusername\tYour Docker Hub username"
+    echo -e     "\trepo_name\tThe name of the repository you wish to push to\n"
+    echo -e     "Example:\n\t$0 spencrc tribeinator"
     exit 1
 fi
 
