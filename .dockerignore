@@ -3,6 +3,6 @@
 /node_modules
 # Folders and files that always exist, but shouldn't be in our container.
 /.git
+/scripts
 .gitignore
-docker-start.sh
 .env
