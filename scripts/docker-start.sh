@@ -6,6 +6,6 @@ docker compose build
 echo "Sucessfully built Docker image!"
 
 echo "Starting the Discord bot."
-docker compose up -d
+docker compose --profile bot up -d
 
 echo "Successfully updated bot!"

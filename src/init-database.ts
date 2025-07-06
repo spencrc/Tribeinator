@@ -11,15 +11,38 @@ const client = new Client({
 
 client.connect();
 
-client.query(`SELECT * FROM users WHERE location='Ottawa'`, (err, result) =>{
+client.query(`SELECT role_name FROM guild_roles WHERE guild_id=490977006616313867`, (err, result) =>{
     if (!err) {
-        const user = result.rows[0];
-        const firstname: string = user.firstname;
-        const lastname: string = user.lastname;
-        const location: string = user.location;
-        console.log(`The user ${firstname} ${lastname} is from ${location}!`);
+        const names: string[] = [];
+        for (const row of result.rows) {
+            const role_name: string = row.role_name;
+            names.push(role_name);
+        }
+        console.log(names);
     } else {
         console.error(err.message);
     }
     client.end();
 })
+
+// client.query(
+//     `INSERT INTO guild_roles(
+//         guild_id, role_name)
+//         VALUES (490977006616313867, 'Minecraft'); `, 
+//     (err, result)=>{
+//         if(!err) console.log("Success!");
+//         else console.error(err.message);
+//         client.end();
+//     }
+// );
+
+// client.query(
+//     `DELETE FROM guild_roles
+//         WHERE role_name = 'Minecraft'
+//         AND guild_id = 490977006616313867; `, 
+//     (err, result)=>{
+//         if(!err) console.log("Success!");
+//         else console.error(err.message);
+//         client.end();
+//     }
+// );
