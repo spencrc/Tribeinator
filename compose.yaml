@@ -26,9 +26,10 @@ services:
   bot:
     build: .
     container_name: my-bot
+    depends_on: [db]
     env_file: .env
     restart: always
-    profiles: [bot, only-bot]
+    profiles: [bot]
   
 volumes:
   postgres-data:
