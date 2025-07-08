@@ -19,7 +19,7 @@ export default class implements SlashCommand {
 		const role = guild.roles.cache.find(role => role.name === role_name);
 
 		if (role != undefined) {
-			pgClient.query(`DELETE FROM guild_roles WHERE guild_id=$1 AND role_name=$2;`, [+guild.id, role_name], async (err, result) =>{
+			pgClient.query(`DELETE FROM guild_roles WHERE guild_id=$1 AND role_name="$2";`, [+guild.id, role_name], async (err, result) =>{
 				if (!err) {
 					await interaction.reply({
 						content: `Found the \`${role_name}\` role and removed it from the list, <@${member.id}>!`,
