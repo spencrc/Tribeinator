@@ -2,7 +2,7 @@
 set -e # Exit on error
 
 echo "Started building Docker image."
-docker compose build
+docker compose --profile bot build
 echo "Sucessfully built Docker image!"
 
 echo "Starting the Discord bot."
