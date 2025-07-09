@@ -11,7 +11,7 @@ export const POSTGRES_USER: string = process.env.POSTGRES_USER as string;
 export const POSTGRES_PASSWORD: string = process.env.POSTGRES_PASSWORD as string;
 
 export const pgClient = new Client({
-    host: "localhost",
+    host: process.env.POSTGRES_HOST as string,
     user: POSTGRES_USER,
     port: 5432,
     password: POSTGRES_PASSWORD,
