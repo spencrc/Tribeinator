@@ -6,11 +6,10 @@ WORKDIR /app
 
 # Copy and install our bot's packages.
 COPY package.json ./
-RUN npm install
+RUN npm install --production
 
 # Copies the actual bot's code and compiles it.
 COPY . .
-RUN npm run build
 
 # Runs the bot!
 CMD ["npm", "start"]
