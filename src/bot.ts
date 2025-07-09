@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits, MessageFlags } from "discord.js";
-import { DISCORD_TOKEN } from "./config.js";
+import { DISCORD_TOKEN, pgClient } from "./config.js";
 
 import type { SlashCommand, MessageCommand } from './commands/commands.js';
 
@@ -46,6 +46,7 @@ for (const folder of commandFolders) {
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	pgClient.connect();
 });
 
 client.on(Events.InteractionCreate, async interaction => {
