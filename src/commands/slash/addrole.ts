@@ -19,7 +19,7 @@ export default class implements SlashCommand {
 		const role = guild.roles.cache.find(role => role.name === role_name);
 
 		if (role != undefined) {
-			pgClient.query(`INSERT INTO guild_roles(guild_id, role_name) VALUES ($1, "$2");`, [+guild.id, role_name], async (err, result) =>{
+			pgClient.query(`INSERT INTO guild_roles(guild_id, "role_name") VALUES ($1, $2);`, [+guild.id, role_name], async (err, result) =>{
 				if (!err) {
 					await interaction.reply({
 						content: `Found the \`${role_name}\` role and added it to the list, <@${member.id}>!`,
