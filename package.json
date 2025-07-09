@@ -7,15 +7,18 @@
   },
   "type": "module",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/bot.js",
-    "dev": "npx tsx --watch-path=./src src/bot.ts",
+    "dev:build": "tsc --watch --incremental",
+    "dev:start": "nodemon dist/bot.js",
+    "dev": "run-p dev:*",
     "deploy": "node dist/deploy-commands.js",
     "undeploy": "node dist/undeploy-commands.js"
   },
   "devDependencies": {
     "@types/pg": "^8.15.4",
-    "tsx": "^4.20.3",
+    "nodemon": "^3.1.10",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5.8.3"
   }
 }
