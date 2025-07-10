@@ -4,7 +4,8 @@ import type {
     ContextMenuCommandBuilder, 
     SlashCommandSubcommandsOnlyBuilder, 
     ChatInputCommandInteraction,
-    SlashCommandOptionsOnlyBuilder
+    SlashCommandOptionsOnlyBuilder,
+    AutocompleteInteraction
 } from "discord.js";
 
 export interface MessageCommand {
@@ -15,5 +16,6 @@ export interface MessageCommand {
 
 export interface SlashCommand {
     data: SlashCommandBuilder | ContextMenuCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder
+    autocomplete?: (interaction: AutocompleteInteraction) => Promise<void> | void
     execute: (interaction: ChatInputCommandInteraction) => Promise<void> | void
 }
