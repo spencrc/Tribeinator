@@ -3,8 +3,7 @@ import { DISCORD_CLIENT_ID, DISCORD_TOKEN } from "./config.js";
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import fs from "node:fs";
 import path from "node:path";
-
-import type { SlashCommand, MessageCommand } from './commands/commands.js';
+import { SlashCommand } from "./classes/slash-command.js";
 
 const commands: SlashCommand[] = [];
 const __filename: string = fileURLToPath(import.meta.url); //gets this file's name
