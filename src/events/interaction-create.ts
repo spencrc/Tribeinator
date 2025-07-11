@@ -1,5 +1,6 @@
 import { Events, Interaction, CacheType, MessageFlags, ChatInputCommandInteraction, AutocompleteInteraction } from "discord.js";
 import { client } from "../client.js"
+import { Event } from "../classes/event.js";
 
 const executeChatInputCommand = async (interaction: ChatInputCommandInteraction<CacheType>): Promise<void> => {
     const command = client.commands.get(interaction.commandName);
@@ -36,10 +37,10 @@ const autocomplete = async (interaction: AutocompleteInteraction<CacheType>): Pr
     }
 }
 
-export default {
+export default new Event ({
     name: Events.InteractionCreate,
-    execute(interaction: Interaction<CacheType>): void {
-        if ( interaction.isChatInputCommand() ) executeChatInputCommand(interaction);
-        else if ( interaction.isAutocomplete() ) autocomplete(interaction);
+    execute: (interaction: Interaction<CacheType>): void => {
+        if ( interaction.isChatInputCommand() )     executeChatInputCommand(interaction);
+        else if ( interaction.isAutocomplete() )    autocomplete(interaction);
     }
-}
+})
