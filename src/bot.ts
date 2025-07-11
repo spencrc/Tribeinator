@@ -1,11 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { Client, Collection, Events, GatewayIntentBits, MessageFlags } from "discord.js";
 import { DISCORD_TOKEN } from "./config.js";
 import { client } from './client.js';
-
-import type { SlashCommand, MessageCommand } from './commands/commands.js';
+import { migrate } from "./database/migration.js";
 
 const __filename: string = fileURLToPath(import.meta.url); //gets this file's name
 const __dirname: string = path.dirname(__filename); //gets this file's directory name
@@ -43,6 +41,9 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+// Migrate PostgreSQL tables to local database
+migrate();
 
 // Log in to Discord with your client's token
 client.login(DISCORD_TOKEN);
