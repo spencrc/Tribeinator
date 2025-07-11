@@ -1,4 +1,4 @@
-import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { ActivityType, Client, Collection, GatewayIntentBits } from "discord.js";
 import { SlashCommand } from "./slash-command.js";
 import { readdirSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
@@ -14,7 +14,9 @@ export class DiscordClient extends Client {
             ],
             presence: {
                 activities: [{
-                    name: `/ping to get a response!`
+                    name: `customstatus`,
+                    type: ActivityType.Custom,
+                    state: `/ping to get a response!`
                 }],
                 status: `online`
             }
