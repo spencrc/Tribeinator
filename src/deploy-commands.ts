@@ -1,5 +1,5 @@
 import { REST, Routes } from "discord.js";
-import { DISCORD_CLIENT_ID, DISCORD_GUILD_ID, DISCORD_TOKEN } from "./config.js";
+import { DISCORD_CLIENT_ID, DISCORD_TOKEN } from "./config.js";
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import fs from "node:fs";
 import path from "node:path";
