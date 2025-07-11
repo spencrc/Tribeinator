@@ -1,11 +1,11 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import type { SlashCommand } from "../commands.js";
+import { SlashCommand } from '../../classes/slash-command.js';
 
-export default class implements SlashCommand {
-	public data = new SlashCommandBuilder()
+export default new SlashCommand ({
+	data: new SlashCommandBuilder()
 		.setName('ping')
-		.setDescription('Replies with Pong!')
-	public async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+		.setDescription('Replies with Pong!'),
+	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
 		await interaction.reply('Pong!');
 	}
-};
+});

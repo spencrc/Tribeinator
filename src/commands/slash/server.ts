@@ -1,12 +1,12 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, Guild } from 'discord.js';
-import type { SlashCommand } from "../commands.js";
+import { SlashCommand } from '../../classes/slash-command.js';
 
-export default class implements SlashCommand {
-	public data = new SlashCommandBuilder()
+export default new SlashCommand ({
+	data: new SlashCommandBuilder()
 		.setName('membercount')
-		.setDescription('Provides the number of members in a server.')
-	public async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+		.setDescription('Provides the number of members in a server.'),
+	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
 		let guild = interaction.guild as Guild
 		await interaction.reply(`This server is ${guild.name} and has ${guild.memberCount} members!`);
 	}
-};
+});

@@ -1,9 +1,9 @@
 import { ChatInputCommandInteraction, Guild, GuildMember, MessageFlags, PermissionFlagsBits, Role, SlashCommandBuilder } from 'discord.js';
 import { pool } from '../../database/pool.js';
-import type { SlashCommand } from "../commands.js";
+import { SlashCommand } from '../../classes/slash-command.js';
 
-export default class implements SlashCommand {
-	public data = new SlashCommandBuilder()
+export default new SlashCommand ({
+	data: new SlashCommandBuilder()
 		.setName('removegiveablerole')
 		.setDescription('Remove a role from the server list of self-grantable roles.')
 		.addStringOption(option =>
@@ -11,8 +11,8 @@ export default class implements SlashCommand {
 				.setDescription('The role name')
 				.setRequired(true)
 		)
-		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles);
-    public async execute(interaction: ChatInputCommandInteraction): Promise<void> { 
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
+    execute: async (interaction: ChatInputCommandInteraction): Promise<void> => { 
 		const role_name = interaction.options.getString('role');
 		const guild: Guild = interaction.guild as Guild;
 		const member: GuildMember = interaction.member as GuildMember;
@@ -39,4 +39,4 @@ export default class implements SlashCommand {
 			});
 		}
 	}
-};
+});

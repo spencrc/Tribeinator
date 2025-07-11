@@ -1,17 +1,17 @@
 import { ChatInputCommandInteraction, Guild, GuildMember, MessageFlags, Role, SlashCommandBuilder } from 'discord.js';
 import { pool } from '../../database/pool.js';
-import type { SlashCommand } from "../commands.js";
+import { SlashCommand } from '../../classes/slash-command.js';
 
-export default class implements SlashCommand {
-	public data = new SlashCommandBuilder()
+export default new SlashCommand ({
+	data: new SlashCommandBuilder()
 		.setName('selfrole')
 		.setDescription('Allows you to give yourself a role from a list determined by the server!')
 		.addStringOption(option =>
 			option.setName('role')
 				.setDescription('The role name')
 				.setRequired(true)
-		)
-	public execute(interaction: ChatInputCommandInteraction): void {
+		),
+	execute: (interaction: ChatInputCommandInteraction): void => {
 		const role_name: string = interaction.options.getString('role') as string;
 		const member: GuildMember = interaction.member as GuildMember;
 		const guild: Guild = interaction.guild as Guild;
@@ -32,4 +32,4 @@ export default class implements SlashCommand {
 			}
 		});
 	}
-};
+});

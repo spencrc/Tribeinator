@@ -20,9 +20,8 @@ for (const folder of commandFolders) {
 
     for (const file of commandFiles) {
         const filePath: string = path.join(commandsPath, file);
-        const commandClass = (await import( pathToFileURL(filePath).href ))
+        const command = (await import( pathToFileURL(filePath).href ))
 			.default;
-		const command = new commandClass();
         
 		client.commands.set(command.data.name, command);
     }
