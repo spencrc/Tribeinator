@@ -35,6 +35,7 @@ export class DiscordClient extends Client {
                     .default;
                 
                 this.commands.set(command.data.name, command);
+                console.log("Loaded new command:", file);
             }
         }
         
@@ -47,6 +48,7 @@ export class DiscordClient extends Client {
             } else {
                 this.on(event.name, (...args) => event.execute(...args));
             }
+            console.log("Loaded new event:", file);
         }
     }
 
