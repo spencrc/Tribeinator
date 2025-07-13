@@ -3,18 +3,20 @@ import { DISCORD_CLIENT_ID, DISCORD_TOKEN } from "./config.js";
 import { client } from "./client.js";
 
 // Loads all commands
-client.load();
+await client.load();
 
 const rest: REST = new REST().setToken(DISCORD_TOKEN);
 
 (async () => {
 	try {
 		console.log(`Started refreshing application (/) commands.`);
+		// We want a version of client.commands with data as JSON, so map client.commands like so:
+		const commands = client.commands.map(cmd => cmd.data.toJSON());
 
 		// The put method is used to fully refresh all commands globally with the current set
 		await rest.put(
 			Routes.applicationCommands(DISCORD_CLIENT_ID),
-			{ body: client.commands },
+			{ body: commands },
 		);
 
 		console.log(`Successfully reloaded application (/) commands.`);
