@@ -13,28 +13,36 @@ export default new SlashCommand ({
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
     execute: async (interaction: ChatInputCommandInteraction): Promise<void> => { 
+		if (!interaction.guild) return;
+
 		const role_name = interaction.options.getString('role');
-		const guild: Guild = interaction.guild as Guild;
+		const guild = interaction.guild;
 		const member: GuildMember = interaction.member as GuildMember;
 		const role = guild.roles.cache.find(role => role.name === role_name);
+		const mention = `<@${member.id}>`;
 
-		if (role != undefined) {
-			pool.query(`DELETE FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`, [+guild.id, role_name], async (err, result) =>{
-				if (!err) {
-					await interaction.reply({
-						content: `Found the \`${role_name}\` role and removed it from the list, <@${member.id}>!`,
-						flags: MessageFlags.Ephemeral
-					});
-				} else {
-					await interaction.reply({
-						content: `Sorry <@${member.id}>! Couldn't find the ${role_name} role!`,
-						flags: MessageFlags.Ephemeral
-					});
-				}
-			});
-		} else {
+		if (!role) {
 			await interaction.reply({
-				content: `Sorry <@${member.id}>! Couldn't find the ${role_name} role!`,
+				content: `Sorry ${mention}! Couldn't find a role by the name \`${role_name}\`!-# Role names are case sensitive! Did you forget a capital?`,
+				flags: MessageFlags.Ephemeral
+			});
+			return;
+		}
+
+		try {
+			pool.query(
+				`DELETE FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
+				[+guild.id, role_name],
+			);
+
+			await interaction.reply({
+				content: `Found the \`${role_name}\` role and removed it from the list ${mention}!`,
+				flags: MessageFlags.Ephemeral
+			});
+		} catch(error) {
+			console.error("Database error occured:", error);
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database!`,
 				flags: MessageFlags.Ephemeral
 			});
 		}

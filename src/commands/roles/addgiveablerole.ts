@@ -13,30 +13,37 @@ export default new SlashCommand ({
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
     execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
+		if (!interaction.guild) return;
+
 		const role_name = interaction.options.getString('role');
-		const guild: Guild = interaction.guild as Guild;
+		const guild = interaction.guild;
 		const member: GuildMember = interaction.member as GuildMember;
 		const role = guild.roles.cache.find(role => role.name === role_name);
+		const mention = `<@${member.id}>`;
 
-		if (role != undefined) {
-			pool.query(`INSERT INTO guild_roles(guild_id, "role_name") VALUES ($1, $2);`, [+guild.id, role_name], async (err, result) =>{
-				if (!err) {
-					await interaction.reply({
-						content: `Found the \`${role_name}\` role and added it to the list, <@${member.id}>!`,
-						flags: MessageFlags.Ephemeral
-					});
-				} else {
-					await interaction.reply({
-						content: `Sorry <@${member.id}>! Couldn't find the \`${role_name}\` role or it was a duplicate!`,
-						flags: MessageFlags.Ephemeral
-						});
-				}
+		if (!role) {
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find a role by the name \`${role_name}\`!\n-# Role names are case sensitive! Did you forget a capital?`,
+				flags: MessageFlags.Ephemeral
 			});
 			return;
 		}
-		await interaction.reply({
-			content: `Sorry <@${member.id}>! Couldn't find the ${role_name} role!`,
-			flags: MessageFlags.Ephemeral
-		});
+
+		try {
+			await pool.query(
+				`INSERT INTO guild_roles(guild_id, "role_name") VALUES ($1, $2);`,
+				[+guild.id, role_name],
+			);
+
+			await interaction.reply({
+				content: `Found the \`${role_name}\` role and added it to the list ${mention}!`,
+				flags: MessageFlags.Ephemeral
+			});
+		} catch(error) {
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database or it was a duplicate!`,
+				flags: MessageFlags.Ephemeral
+			});
+		}
 	}
 });

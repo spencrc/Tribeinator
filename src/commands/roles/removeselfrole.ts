@@ -12,30 +12,47 @@ export default new SlashCommand ({
 				.setRequired(true)
 		),
 	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
-		const role_name: string = interaction.options.getString('role') as string;
-		const member: GuildMember = interaction.member as GuildMember;
-		const guild: Guild = interaction.guild as Guild;
+		if (!interaction.guild) return;
 
-		if (member.roles.cache.find(role => role.name === role_name) != undefined) {
-			pool.query(`SELECT role_name FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`, [+guild.id, role_name], async (err, result) =>{
-				const rowCount: number = result.rowCount as number;
-				if (!err && rowCount > 0) {
-					const role: Role = guild.roles.cache.find(role => role.name === role_name) as Role;
-					member.roles.remove(role);
-					await interaction.reply({
-						content: `Found the \`${role_name}\` role and removed it from <@${member.id}>!`,
-						flags: MessageFlags.Ephemeral
-					});
-				} else {
-					await interaction.reply({
-						content: `Sorry <@${member.id}>! Couldn't find the \`${role_name}\` role!`,
-						flags: MessageFlags.Ephemeral
-					});
-				}
-			});
-		} else {
+		const role_name = interaction.options.getString('role', true); // 'role' is a required option! thus, it cannot be null
+		const member: GuildMember = interaction.member as GuildMember;
+		const guild = interaction.guild;
+		const role = guild.roles.cache.find(role => role.name === role_name);
+		const mention = `<@${member.id}>`;
+
+		if (!role) {
 			await interaction.reply({
-				content: `Sorry <@${member.id}>! You don't have the \`${role_name}\` role!`,
+				content: `Sorry ${mention}! Couldn't find a role by the name \`${role_name}\`!\n-# Role names are case sensitive! Did you forget a capital?`,
+				flags: MessageFlags.Ephemeral
+			});
+			return;
+		}
+
+		if (!member.roles.cache.has(role.id)) {
+			await interaction.reply({
+				content: `Sorry ${mention}! You don't have the \`${role_name}\` role!`,
+				flags: MessageFlags.Ephemeral
+			});
+			return;
+		}
+
+		try {
+			const { rowCount } = await pool.query(
+				`SELECT role_name FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
+				[+guild.id, role_name]
+			);
+
+			if (rowCount! === 0) throw new Error('role unexpectingly not in database'); // row count can never be null, it'll be 0 if no roles were selected
+
+			member.roles.remove(role);
+			await interaction.reply({
+				content: `Found the \`${role_name}\` role and removed it from ${mention}!`,
+				flags: MessageFlags.Ephemeral
+			});
+		} catch (error) {
+			console.error("Database error occured:", error);
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database!`,
 				flags: MessageFlags.Ephemeral
 			});
 		}

@@ -11,25 +11,42 @@ export default new SlashCommand ({
 				.setDescription('The role name')
 				.setRequired(true)
 		),
-	execute: (interaction: ChatInputCommandInteraction): void => {
+	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
+		if (!interaction.guild) return;
+		
 		const role_name: string = interaction.options.getString('role') as string;
 		const member: GuildMember = interaction.member as GuildMember;
-		const guild: Guild = interaction.guild as Guild;
-		pool.query(`SELECT role_name FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`, [+guild.id, role_name], async (err, result) =>{
-			const rowCount: number = result.rowCount as number;
-			if (!err && rowCount > 0) {
-				const role: Role = guild.roles.cache.find(role => role.name === role_name) as Role;
-				member.roles.add(role);
-				await interaction.reply({
-					content: `Found the \`${role_name}\` role and gave it to <@${member.id}>!`,
-					flags: MessageFlags.Ephemeral
-				});
-			} else {
-				await interaction.reply({
-					content: `Sorry <@${member.id}>! Couldn't find the \`${role_name}\` role!`,
-					flags: MessageFlags.Ephemeral
-				});
-			}
-		});
+		const guild = interaction.guild;
+
+		const role = guild.roles.cache.find(role => role.name === role_name);
+		const mention = `<@${member.id}>`;
+
+		if (!role) {
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find a role by the name \`${role_name}\`\n-# Role names are case sensitive! Did you forget a capital?`,
+				flags: MessageFlags.Ephemeral
+			});
+			return;
+		}
+
+		try {
+			const { rowCount } = await pool.query(
+				`SELECT role_name FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
+				[+guild.id, role_name]
+			);
+
+			if (rowCount! === 0) throw new Error('role unexpectingly not in database'); // row count can never be null, it'll be 0 if no roles were selected
+
+			member.roles.add(role);
+			await interaction.reply({
+				content: `Found the \`${role_name}\` role and gave it to ${mention}!`,
+				flags: MessageFlags.Ephemeral
+			});
+		} catch(error) {
+			await interaction.reply({
+				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database!`,
+				flags: MessageFlags.Ephemeral
+			});
+		}
 	}
 });
