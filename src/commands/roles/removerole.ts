@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Guild, GuildMember, MessageFlags, PermissionFlagsBits, Role, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { pool } from '../../database/pool.js';
 import { SlashCommand } from '../../classes/slash-command.js';
 

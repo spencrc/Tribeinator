@@ -1,7 +1,4 @@
-import type {
-    Client,
-    ClientEvents
-} from "discord.js";
+import type {ClientEvents} from "discord.js";
 
 type EventName = keyof ClientEvents
 type EventExecute<K extends EventName> = (...args: ClientEvents[K]) => Promise<void> | void ;

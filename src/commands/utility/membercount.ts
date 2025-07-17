@@ -6,7 +6,7 @@ export default new SlashCommand ({
 		.setName('membercount')
 		.setDescription('Provides the number of members in a server.'),
 	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
-		let guild = interaction.guild as Guild
+		const guild = interaction.guild as Guild
 		await interaction.reply(`This server is ${guild.name} and has ${guild.memberCount} members!`);
 	}
 });
