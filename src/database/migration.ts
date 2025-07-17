@@ -15,8 +15,9 @@ const createGuildLevelsTable = async (): Promise<void> => {
         CREATE TABLE IF NOT EXISTS "guild_levels" (
             guild_id BIGINT,
             user_id BIGINT,
-            xp INTEGER,
-            level INTEGER,
+            xp INTEGER DEFAULT 0,
+            level INTEGER DEFAULT 0,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (guild_id, user_id)
         );
     `)
