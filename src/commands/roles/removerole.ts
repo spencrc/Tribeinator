@@ -30,7 +30,7 @@ export default new SlashCommand ({
 		}
 
 		try {
-			pool.query(
+			await pool.query(
 				`DELETE FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
 				[+guild.id, role_name],
 			);
