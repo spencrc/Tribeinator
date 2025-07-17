@@ -14,7 +14,7 @@
     "dev": "run-p dev:*",
     "deploy": "node dist/deploy-commands.js",
     "undeploy": "node dist/undeploy-commands.js",
-    "lint": "eslint ."
+    "lint": "eslint src/"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
