@@ -1,24 +1,28 @@
-import { ChatInputCommandInteraction, GuildMember, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+	ChatInputCommandInteraction,
+	GuildMember,
+	MessageFlags,
+	PermissionFlagsBits,
+	SlashCommandBuilder
+} from 'discord.js';
 import { pool } from '../../database/pool.js';
 import { SlashCommand } from '../../classes/slash-command.js';
 
-export default new SlashCommand ({
+export default new SlashCommand({
 	data: new SlashCommandBuilder()
 		.setName('addgiveablerole')
 		.setDescription('Add a role to the server list of self-grantable roles.')
-		.addStringOption(option =>
-			option.setName('role')
-				.setDescription('The role name')
-				.setRequired(true)
+		.addStringOption((option) =>
+			option.setName('role').setDescription('The role name').setRequired(true)
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
-    execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
+	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
 		if (!interaction.guild) return;
 
-		const role_name = interaction.options.getString('role');
+		const role_name = interaction.options.getString('role', true);
 		const guild = interaction.guild;
 		const member: GuildMember = interaction.member as GuildMember;
-		const role = guild.roles.cache.find(role => role.name === role_name);
+		const role = guild.roles.cache.find((role) => role.name === role_name);
 		const mention = `<@${member.id}>`;
 
 		if (!role) {
@@ -32,7 +36,7 @@ export default new SlashCommand ({
 		try {
 			await pool.query(
 				`INSERT INTO guild_roles(guild_id, "role_name") VALUES ($1, $2);`,
-				[+guild.id, role_name],
+				[+guild.id, role_name]
 			);
 
 			await interaction.reply({

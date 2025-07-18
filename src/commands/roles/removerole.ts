@@ -1,24 +1,30 @@
-import { ChatInputCommandInteraction, GuildMember, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import {
+	ChatInputCommandInteraction,
+	GuildMember,
+	MessageFlags,
+	PermissionFlagsBits,
+	SlashCommandBuilder
+} from 'discord.js';
 import { pool } from '../../database/pool.js';
 import { SlashCommand } from '../../classes/slash-command.js';
 
-export default new SlashCommand ({
+export default new SlashCommand({
 	data: new SlashCommandBuilder()
 		.setName('removegiveablerole')
-		.setDescription('Remove a role from the server list of self-grantable roles.')
-		.addStringOption(option =>
-			option.setName('role')
-				.setDescription('The role name')
-				.setRequired(true)
+		.setDescription(
+			'Remove a role from the server list of self-grantable roles.'
+		)
+		.addStringOption((option) =>
+			option.setName('role').setDescription('The role name').setRequired(true)
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
-    execute: async (interaction: ChatInputCommandInteraction): Promise<void> => { 
+	execute: async (interaction: ChatInputCommandInteraction): Promise<void> => {
 		if (!interaction.guild) return;
 
 		const role_name = interaction.options.getString('role');
 		const guild = interaction.guild;
 		const member: GuildMember = interaction.member as GuildMember;
-		const role = guild.roles.cache.find(role => role.name === role_name);
+		const role = guild.roles.cache.find((role) => role.name === role_name);
 		const mention = `<@${member.id}>`;
 
 		if (!role) {
@@ -32,15 +38,15 @@ export default new SlashCommand ({
 		try {
 			await pool.query(
 				`DELETE FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
-				[+guild.id, role_name],
+				[+guild.id, role_name]
 			);
 
 			await interaction.reply({
 				content: `Found the \`${role_name}\` role and removed it from the list ${mention}!`,
 				flags: MessageFlags.Ephemeral
 			});
-		} catch(error) {
-			console.error("Database error occured:", error);
+		} catch (error) {
+			console.error('Database error occured:', error);
 			await interaction.reply({
 				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database!`,
 				flags: MessageFlags.Ephemeral

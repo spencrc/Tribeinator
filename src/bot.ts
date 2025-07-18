@@ -1,5 +1,5 @@
 import { client } from './client.js';
-import { migrate } from "./database/migration.js";
+import { migrate } from './database/migration.js';
 
 // Migrate PostgreSQL tables to local database
 await migrate();

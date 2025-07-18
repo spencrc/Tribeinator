@@ -3,3 +3,4 @@
 /.git
 /scripts
 /dist
+tsconfig.json
