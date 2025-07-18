@@ -7,7 +7,7 @@ await client.load();
 
 const rest: REST = new REST().setToken(DISCORD_TOKEN);
 
-(async () => {
+await (async () => {
 	try {
 		console.log(`Started refreshing application (/) commands.`);
 		// We want a version of client.commands with data as JSON, so map client.commands like so:

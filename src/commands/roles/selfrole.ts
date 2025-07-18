@@ -5,7 +5,7 @@ import { SlashCommand } from '../../classes/slash-command.js';
 const addRoleOption = (option: SlashCommandStringOption) => option.setName('role').setDescription('The role name').setRequired(true);
 
 const addSelfRole = async (interaction: ChatInputCommandInteraction, member: GuildMember, mention: string, role: Role, roleName: string): Promise<void> => {
-	member.roles.add(role);
+	await member.roles.add(role);
 	await interaction.reply({
 		content: `Found the \`${roleName}\` role and gave it to ${mention}.`,
 		flags: MessageFlags.Ephemeral
@@ -13,7 +13,7 @@ const addSelfRole = async (interaction: ChatInputCommandInteraction, member: Gui
 }
 
 const removeSelfRole = async (interaction: ChatInputCommandInteraction, member: GuildMember, mention: string, role: Role, roleName: string): Promise<void> => {
-	member.roles.remove(role);
+	await member.roles.remove(role);
 	await interaction.reply({
 		content: `Found the \`${roleName}\` role and removed it from ${mention}.`,
 		flags: MessageFlags.Ephemeral
@@ -58,7 +58,7 @@ export default new SlashCommand ({
 				`SELECT role_name FROM guild_roles WHERE guild_id=$1 AND "role_name"=$2;`,
 				[+guild.id, roleName]
 			);
-
+			
 			if (rowCount! === 0) throw new Error('role unexpectingly not in database'); // row count can never be null, it'll be 0 if no roles were selected
 
 			switch (interaction.options.getSubcommand()) {

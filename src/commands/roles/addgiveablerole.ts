@@ -39,7 +39,7 @@ export default new SlashCommand ({
 				content: `Found the \`${role_name}\` role and added it to the list ${mention}!`,
 				flags: MessageFlags.Ephemeral
 			});
-		} catch(error) {
+		} catch {
 			await interaction.reply({
 				content: `Sorry ${mention}! Couldn't find the \`${role_name}\` role in the database or it was a duplicate!`,
 				flags: MessageFlags.Ephemeral
