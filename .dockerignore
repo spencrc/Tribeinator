@@ -8,3 +8,4 @@
 .gitignore
 .env
 tsconfig.tsbuildinfo
+eslint.config.mjs
