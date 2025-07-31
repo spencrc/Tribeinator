@@ -10,8 +10,8 @@ This bot is currently a work-in-progress, but has the following commands impleme
 - `/membercount`: replies with the server's name and how many members it has.
 - `/addgiveablerole`: add a role to the server list of self-grantable roles.
 - `/removegiveablerole`: remove a role from the server list of self-grantable roles.
-- `/selfrole`: allows you to give yourself a role from a list determined by the server!
-- `/removeselfrole`: allows you to remove a role from yourself, from a list determined by the server!
+- `/selfrole add`: allows you to give yourself a role from a list determined by the server!
+- `/selfrole remove`: allows you to remove a role from yourself, from a list determined by the server!
 
 ## Setup
 
@@ -49,7 +49,7 @@ You can run the bot in a few different ways:
    - This will automatically restart the bot every time you update its code.
 2. Normal Mode
    - Run `docker compose --profile db up -d`.
-   - This will start the PostgreSQL which the bot relies on.
+   - This will start the PostgreSQL database which the bot relies on.
    - Run `npm run build`.
    - This will build the `dist` folder (containing the transpiled JavaScript files) from the `src` folder.
    - Run `npm start`.
